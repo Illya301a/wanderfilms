@@ -1,7 +1,7 @@
 class MovieSearchApp {
     constructor() {
         this.apiKey = '3a8d3d6a';
-        this.baseUrl = 'http://www.omdbapi.com/';
+        this.baseUrl = 'https://www.omdbapi.com/';
         this.searchTimeout = null;
         this.currentPage = 1;
         this.totalResults = 0;
@@ -142,13 +142,15 @@ class MovieSearchApp {
             const movie = await response.json();
             
             if (movie.Response === 'False') {
-                throw new Error(movie.Error || 'Error loading movie details');
+                console.error('API Error:', movie.Error);
+                this.backToSearch();
+                return;
             }
 
             this.showMovieDetails(movie);
         } catch (error) {
             console.error('Movie details error:', error);
-            this.showError('Error loading movie details');
+            this.backToSearch();
         } finally {
             this.hideLoading();
         }
