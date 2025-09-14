@@ -1,7 +1,7 @@
 class MovieSearchApp {
     constructor() {
         this.apiKey = '3a8d3d6a';
-        this.baseUrl = 'http://www.omdbapi.com/';
+        this.baseUrl = 'https://www.omdbapi.com/';
         this.searchTimeout = null;
         this.currentPage = 1;
         this.totalResults = 0;
@@ -57,9 +57,13 @@ class MovieSearchApp {
             this.currentQuery = query;
             this.currentPage = page;
 
-            const response = await fetch(
-                `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(query)}&page=${page}`
-            );
+            let apiUrl = `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(query)}&page=${page}`;
+            
+            if (window.location.hostname.includes('github.io')) {
+                apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+            }
+
+            const response = await fetch(apiUrl);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -131,9 +135,14 @@ class MovieSearchApp {
     async searchMovieDetails(imdbID) {
         try {
             this.showLoading();
-            const response = await fetch(
-                `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbID}&plot=full`
-            );
+            
+            let apiUrl = `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbID}&plot=full`;
+            
+            if (window.location.hostname.includes('github.io')) {
+                apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+            }
+            
+            const response = await fetch(apiUrl);
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
