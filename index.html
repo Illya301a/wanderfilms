@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Wander films</title>
+</head>
+
+<body>
+    <video autoplay muted loop playsinline class="video-background">
+        <source src="photos/background.mov" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay"></div>
+    <div class="glass-object glass-1"></div>
+    <div class="glass-object glass-2"></div>
+    <div class="glass-object glass-3"></div>
+    <div class="glass-object glass-4"></div>
+    <div class="glass-object glass-5"></div>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <img src="photos/logo.png" width="50" alt="Wander films" class="logo">
+                Wander films
+            </h1>
+            <p class="subtitle">Find your favorite movies in real-time</p>
+        </header>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Enter movie title..."
+                    autocomplete="off">
+                <div class="search-icon">🔍</div>
+                <div class="loading-spinner" id="loadingSpinner"></div>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="welcome-message" id="welcomeMessage">
+                <h2>Welcome!</h2>
+                <p>Start typing a movie title to see search results</p>
+                <div class="features">
+                    <div class="feature">
+                        <span class="feature-icon">⚡</span>
+                        <span>Real-time search</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📱</span>
+                        <span>Responsive design</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🎯</span>
+                        <span>Accurate results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <div class="error-content">
+                <span class="error-icon">⚠️</span>
+                <span class="error-text"></span>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination" style="display: none;">
+            <button id="prevBtn" class="pagination-btn" disabled>← Previous</button>
+            <span class="page-info" id="pageInfo"></span>
+            <button id="nextBtn" class="pagination-btn" disabled>Next →</button>
+        </div>
+    </div>
+
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
