@@ -1,13 +1,20 @@
 class MovieSearchApp {
     constructor() {
         this.apiKey = '3a8d3d6a';
-        this.baseUrl = 'http://www.omdbapi.com/';
+        this.baseUrl = this.getApiUrl();
         this.searchTimeout = null;
         this.currentPage = 1;
         this.totalResults = 0;
         this.currentQuery = '';
         
         this.init();
+    }
+
+    getApiUrl() {
+        if (window.location.hostname === 'github.io' || window.location.hostname.includes('github.io')) {
+            return 'https://api.allorigins.win/raw?url=https://www.omdbapi.com/';
+        }
+        return 'https://www.omdbapi.com/';
     }
 
     init() {
