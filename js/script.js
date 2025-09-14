@@ -1,7 +1,7 @@
 class MovieSearchApp {
     constructor() {
         this.apiKey = '3a8d3d6a';
-        this.baseUrl = 'https://www.omdbapi.com/';
+        this.baseUrl = 'https://api.allorigins.win/raw?url=https://www.omdbapi.com/';
         this.searchTimeout = null;
         this.currentPage = 1;
         this.totalResults = 0;
@@ -58,7 +58,14 @@ class MovieSearchApp {
             this.currentPage = page;
 
             const response = await fetch(
-                `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(query)}&page=${page}`
+                `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(query)}&page=${page}`,
+                {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                }
             );
 
             if (!response.ok) {
@@ -77,7 +84,11 @@ class MovieSearchApp {
 
         } catch (error) {
             console.error('Search error:', error);
-            this.showError(this.getErrorMessage(error));
+            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                this.showError('CORS error: Please try using a different browser or disable CORS for testing');
+            } else {
+                this.showError(this.getErrorMessage(error));
+            }
         } finally {
             this.hideLoading();
         }
@@ -132,7 +143,14 @@ class MovieSearchApp {
         try {
             this.showLoading();
             const response = await fetch(
-                `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbID}&plot=full`
+                `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbID}&plot=full`,
+                {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                }
             );
             
             if (!response.ok) {
@@ -150,6 +168,9 @@ class MovieSearchApp {
             this.showMovieDetails(movie);
         } catch (error) {
             console.error('Movie details error:', error);
+            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                console.error('CORS error when loading movie details');
+            }
             this.backToSearch();
         } finally {
             this.hideLoading();
