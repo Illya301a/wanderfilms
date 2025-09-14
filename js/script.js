@@ -57,13 +57,9 @@ class MovieSearchApp {
             this.currentQuery = query;
             this.currentPage = page;
 
-            let apiUrl = `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(query)}&page=${page}`;
-            
-            if (window.location.hostname.includes('github.io')) {
-                apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
-            }
-
-            const response = await fetch(apiUrl);
+            const response = await fetch(
+                `${this.baseUrl}?apikey=${this.apiKey}&s=${encodeURIComponent(query)}&page=${page}`
+            );
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -135,14 +131,9 @@ class MovieSearchApp {
     async searchMovieDetails(imdbID) {
         try {
             this.showLoading();
-            
-            let apiUrl = `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbID}&plot=full`;
-            
-            if (window.location.hostname.includes('github.io')) {
-                apiUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
-            }
-            
-            const response = await fetch(apiUrl);
+            const response = await fetch(
+                `${this.baseUrl}?apikey=${this.apiKey}&i=${imdbID}&plot=full`
+            );
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
