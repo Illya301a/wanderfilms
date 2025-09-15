@@ -14,6 +14,7 @@ class MovieSearchApp {
     }
 
     init() {
+        this.showLoadingScreen();
         this.bindEvents();
         this.showWelcomeMessage();
     }
@@ -156,7 +157,12 @@ class MovieSearchApp {
 
         } catch (error) {
             console.error('Search error:', error);
-            this.showError(this.getErrorMessage(error));
+            // Если это ошибка "Movie not found", показываем пустой результат вместо ошибки
+            if (error.message.includes('Movie not found')) {
+                this.displayResults([]);
+            } else {
+                this.showError(this.getErrorMessage(error));
+            }
         } finally {
             this.hideLoading();
         }
@@ -164,24 +170,10 @@ class MovieSearchApp {
 
     displayResults(movies) {
         const resultsSection = document.getElementById('resultsSection');
-        const isRussian = this.currentApi === 'kinopoisk';
         
         if (movies.length === 0) {
-            let noResultsText, tryAgainText;
-            if (isRussian) {
-                noResultsText = 'Фильмы не найдены';
-                tryAgainText = 'Попробуйте изменить поисковый запрос';
-            } else {
-                noResultsText = 'No movies found';
-                tryAgainText = 'Try changing your search query';
-            }
-            
-            resultsSection.innerHTML = `
-                <div class="no-results">
-                    <h3>${noResultsText}</h3>
-                    <p>${tryAgainText}</p>
-                </div>
-            `;
+            this.hideError();
+            this.showWelcomeMessage(true);
             return;
         }
 
@@ -498,24 +490,53 @@ class MovieSearchApp {
         document.getElementById('errorMessage').style.display = 'none';
     }
 
-    showWelcomeMessage() {
+    showWelcomeMessage(noResults = false) {
         const resultsSection = document.getElementById('resultsSection');
         const isRussian = this.currentApi === 'kinopoisk';
+        const isEnglish = this.currentApi === 'omdb';
         
         let welcomeText, descriptionText, feature1Text, feature2Text, feature3Text;
         
-        if (isRussian) {
-            welcomeText = 'Добро пожаловать!';
-            descriptionText = 'Начните вводить название фильма для поиска';
-            feature1Text = 'Поиск в реальном времени';
-            feature2Text = 'Адаптивный дизайн';
-            feature3Text = 'Точные результаты';
+        if (noResults) {
+            if (isRussian) {
+                welcomeText = 'Фильмы не найдены';
+                descriptionText = 'Попробуйте изменить поисковый запрос или введите другое название';
+                feature1Text = 'Проверьте правописание';
+                feature2Text = 'Попробуйте синонимы';
+                feature3Text = 'Используйте другое название';
+            } else if (isEnglish) {
+                welcomeText = 'No movies found';
+                descriptionText = 'Try changing your search query or enter a different title';
+                feature1Text = 'Check spelling';
+                feature2Text = 'Try synonyms';
+                feature3Text = 'Use different title';
+            } else {
+                welcomeText = 'No movies found';
+                descriptionText = 'Try changing your search query or enter a different title';
+                feature1Text = 'Check spelling';
+                feature2Text = 'Try synonyms';
+                feature3Text = 'Use different title';
+            }
         } else {
-            welcomeText = 'Welcome!';
-            descriptionText = 'Start typing a movie title to see search results';
-            feature1Text = 'Real-time search';
-            feature2Text = 'Responsive design';
-            feature3Text = 'Accurate results';
+            if (isRussian) {
+                welcomeText = 'Добро пожаловать!';
+                descriptionText = 'Начните вводить название фильма для поиска';
+                feature1Text = 'Поиск в реальном времени';
+                feature2Text = 'Адаптивный дизайн';
+                feature3Text = 'Точные результаты';
+            } else if (isEnglish) {
+                welcomeText = 'Welcome!';
+                descriptionText = 'Start typing a movie title to see search results';
+                feature1Text = 'Real-time search';
+                feature2Text = 'Responsive design';
+                feature3Text = 'Accurate results';
+            } else {
+                welcomeText = 'Welcome!';
+                descriptionText = 'Start typing a movie title to see search results';
+                feature1Text = 'Real-time search';
+                feature2Text = 'Responsive design';
+                feature3Text = 'Accurate results';
+            }
         }
         
         resultsSection.innerHTML = `
@@ -538,6 +559,31 @@ class MovieSearchApp {
                 </div>
             </div>
         `;
+    }
+
+    showLoadingScreen() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+            
+            // Simulate loading time (2-3 seconds)
+            const loadingTime = Math.random() * 1000 + 2000; // 2-3 seconds
+            
+            setTimeout(() => {
+                this.hideLoadingScreen();
+            }, loadingTime);
+        }
+    }
+
+    hideLoadingScreen() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500); // Wait for fade-out animation to complete
+        }
     }
 
     getErrorMessage(error) {
