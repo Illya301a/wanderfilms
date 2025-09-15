@@ -1,7 +1,7 @@
 class MovieSearchApp {
     constructor() {
         this.apiKey = '3a8d3d6a';
-        this.baseUrl = 'http://www.omdbapi.com/';
+        this.baseUrl = 'https://www.omdbapi.com/';
         this.searchTimeout = null;
         this.currentPage = 1;
         this.totalResults = 0;
