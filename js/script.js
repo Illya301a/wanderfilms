@@ -1,7 +1,7 @@
 class MovieSearchApp {
     constructor() {
         this.omdbApiKey = '3a8d3d6a';
-        this.kinopoiskApiKey = 'VAFW9F1-DGR450B-GXTBC8X-S0E12ZS';
+        this.kinopoiskApiKey = '7XZKT8W-TMNMD52-G1N3GH5-01ST2H3';
         this.omdbBaseUrl = 'https://www.omdbapi.com/';
         this.kinopoiskBaseUrl = 'https://api.kinopoisk.dev/v1.4/';
         this.currentApi = 'omdb'; // 'omdb' or 'kinopoisk'
@@ -63,7 +63,6 @@ class MovieSearchApp {
     }
 
     switchApi(api) {
-        console.log('Switching to API:', api);
         this.currentApi = api;
         this.currentPage = 1;
         this.totalResults = 0;
@@ -109,7 +108,6 @@ class MovieSearchApp {
 
     async searchMovies(query, page = 1) {
         try {
-            console.log('Searching with API:', this.currentApi, 'Query:', query);
             this.showLoading();
             this.currentQuery = query;
             this.currentPage = page;
