@@ -27,10 +27,14 @@
                 <img src="photos/logo.png" width="50" alt="Wander films" class="logo">
                 Wander films
             </h1>
-            <p class="subtitle">Find your favorite movies in real-time</p>
+            <p class="subtitle" id="subtitle">Find your favorite movies in real-time</p>
         </header>
 
         <div class="search-section">
+            <div class="api-switcher">
+                <button id="omdbBtn" class="api-btn active">🇺🇸 English</button>
+                <button id="kinopoiskBtn" class="api-btn">🇷🇺 Русский</button>
+            </div>
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="Enter movie title..."
                     autocomplete="off">

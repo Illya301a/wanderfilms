@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Wander Films</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+        }
+
+        .active {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test Wander Films</h1>
+
+    <div class="test-section">
+        <h2>API Switcher Test</h2>
+        <button id="omdbBtn" class="api-btn active">🇺🇸 English</button>
+        <button id="kinopoiskBtn" class="api-btn">🇷🇺 Русский</button>
+        <button id="kazakhBtn" class="api-btn">🇰🇿 Қазақша</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Search Test</h2>
+        <input type="text" id="searchInput" placeholder="Enter movie title..." style="width: 300px; padding: 10px;">
+        <button onclick="testSearch()">Test Search</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Console Output</h2>
+        <div id="console-output" style="background: #f5f5f5; padding: 10px; height: 200px; overflow-y: scroll;"></div>
+    </div>
+
+    <script>
+        // Override console.log to show in page
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleOutput = document.getElementById('console-output');
+
+        function addToConsole(message, type = 'log') {
+            const div = document.createElement('div');
+            div.style.color = type === 'error' ? 'red' : 'black';
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleOutput.appendChild(div);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            addToConsole(args.join(' '), 'log');
+        };
+
+        console.error = function (...args) {
+            originalError.apply(console, args);
+            addToConsole(args.join(' '), 'error');
+        };
+
+        // Test API switching
+        let currentApi = 'omdb';
+
+        document.getElementById('omdbBtn').addEventListener('click', () => {
+            currentApi = 'omdb';
+            updateButtons();
+            console.log('Switched to English API');
+        });
+
+        document.getElementById('kinopoiskBtn').addEventListener('click', () => {
+            currentApi = 'kinopoisk';
+            updateButtons();
+            console.log('Switched to Russian API');
+        });
+
+        document.getElementById('kazakhBtn').addEventListener('click', () => {
+            currentApi = 'kazakh';
+            updateButtons();
+            console.log('Switched to Kazakh API');
+        });
+
+        function updateButtons() {
+            document.querySelectorAll('.api-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(currentApi + 'Btn').classList.add('active');
+        }
+
+        function testSearch() {
+            const query = document.getElementById('searchInput').value;
+            console.log(`Testing search with API: ${currentApi}, Query: "${query}"`);
+        }
+
+        // Test if elements exist
+        console.log('Testing element existence:');
+        console.log('omdbBtn:', !!document.getElementById('omdbBtn'));
+        console.log('kinopoiskBtn:', !!document.getElementById('kinopoiskBtn'));
+        console.log('kazakhBtn:', !!document.getElementById('kazakhBtn'));
+        console.log('searchInput:', !!document.getElementById('searchInput'));
+    </script>
+</body>
+
+</html>
